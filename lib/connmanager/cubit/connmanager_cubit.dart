@@ -34,5 +34,13 @@ class ConnManagerCubit extends BroadcastCubit<int> {
       connections.removeWhere((key, value) => value == address);
 
   /// Upgrade connection
-  void upgradeConnection(String address) {}
+  void upgradeConnection(String address) {
+    for (var index = 0; index < maxConnections; index++) {
+      if (connections.containsKey(index)) {
+        continue;
+      } else {
+        connections[index] = address;
+      }
+    }
+  }
 }
