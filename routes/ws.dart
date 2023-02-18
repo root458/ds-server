@@ -5,6 +5,8 @@ import 'package:distributed_server/counter/counter.dart';
 Future<Response> onRequest(RequestContext context) async {
   final handler = webSocketHandler(
     (channel, protocol) {
+      final address = context.request.connectionInfo.remoteAddress;
+      print(address.address);
       // A new client has connected to our server.
       // Subscribe the new client to receive notifications
       // whenever the cubit state changes.
