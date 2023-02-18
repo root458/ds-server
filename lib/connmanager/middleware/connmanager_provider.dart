@@ -1,7 +1,8 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:distributed_server/connmanager/connmanager.dart';
 
-final _connManager = ConnManagerCubit();
+// Initialize with max number of connections
+final _connManager = ConnManagerCubit(5);
 
 /// Provide the connManager instance via `RequestContext`.
 final connManagerProvider = provider<ConnManagerCubit>((_) => _connManager);
