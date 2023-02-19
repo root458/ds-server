@@ -3,5 +3,5 @@ import 'package:distributed_server/connmanager/middleware/connmanager_provider.d
 import 'package:distributed_server/counter/counter.dart';
 
 Handler middleware(Handler handler) => handler
-  ..use(counterProvider)
+  .use(counterProvider)
   ..use(connManagerProvider);
