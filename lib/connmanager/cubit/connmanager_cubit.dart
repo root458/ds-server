@@ -17,17 +17,20 @@ class ConnManagerCubit extends BroadcastCubit<int> {
   /// Add connection
   void addConnectedClient(String address) {
     if (_connections.containsValue(address)) {
+      logCurrentConnections();
       return;
     } else {
       for (var index = 0; index < _maxConnections; index++) {
         if (_connections.containsKey(index)) {
           continue;
         } else {
+          // Add connection, abort
           _connections[index] = address;
+          logCurrentConnections();
+          return;
         }
       }
     }
-    logCurrentConnections();
   }
 
   /// Remove connection
