@@ -8,9 +8,12 @@ Future<Response> onRequest(RequestContext context) async {
   final connManagerCubit = context.read<ConnManagerCubit>();
   final handler = webSocketHandler(
     (channel, protocol) {
+      // Accept no more connections
+      if (connManagerCubit.maxConnectionsReached()) {
+        return;
+      }
       // Log address
       final address = context.request.connectionInfo.remoteAddress;
-      print(address.address);
       connManagerCubit.addConnectedClient(address.address);
       // A new client has connected to our server.
       // Subscribe the new client to receive notifications

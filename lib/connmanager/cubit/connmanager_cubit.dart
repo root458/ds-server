@@ -55,4 +55,9 @@ class ConnManagerCubit extends BroadcastCubit<int> {
   void logCurrentConnections() {
     print(_connections);
   }
+
+  /// Max Connections reached
+  bool maxConnectionsReached() {
+    return _connections.length == _maxConnections;
+  }
 }
