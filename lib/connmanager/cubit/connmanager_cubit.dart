@@ -4,26 +4,26 @@ import 'package:broadcast_bloc/broadcast_bloc.dart';
 class ConnManagerCubit extends BroadcastCubit<int> {
   /// Create an instance with an initial state of 0.
   ConnManagerCubit(int maxConnections) : super(0) {
-    connections = <int, String>{};
-    maxConnections = maxConnections;
+    _connections = <int, String>{};
+    _maxConnections = maxConnections;
   }
 
   /// Total number of connections possible
-  late int maxConnections;
+  late int _maxConnections;
 
   /// Storing the current connections
-  late Map<int, String> connections;
+  late Map<int, String> _connections;
 
   /// Add connection
   void addConnectedClient(String address) {
-    if (connections.containsValue(address)) {
+    if (_connections.containsValue(address)) {
       return;
     } else {
-      for (var index = 0; index < maxConnections; index++) {
-        if (connections.containsKey(index)) {
+      for (var index = 0; index < _maxConnections; index++) {
+        if (_connections.containsKey(index)) {
           continue;
         } else {
-          connections[index] = address;
+          _connections[index] = address;
         }
       }
     }
@@ -32,17 +32,17 @@ class ConnManagerCubit extends BroadcastCubit<int> {
 
   /// Remove connection
   void removeConnectedClient(String address) {
-    connections.removeWhere((key, value) => value == address);
+    _connections.removeWhere((key, value) => value == address);
     logCurrentConnections();
   }
 
   /// Upgrade connection
   void upgradeConnection(String address) {
-    for (var index = 0; index < maxConnections; index++) {
-      if (connections.containsKey(index)) {
+    for (var index = 0; index < _maxConnections; index++) {
+      if (_connections.containsKey(index)) {
         continue;
       } else {
-        connections[index] = address;
+        _connections[index] = address;
       }
     }
     logCurrentConnections();
@@ -50,6 +50,6 @@ class ConnManagerCubit extends BroadcastCubit<int> {
 
   /// Log current connections
   void logCurrentConnections() {
-    print(connections);
+    print(_connections);
   }
 }
