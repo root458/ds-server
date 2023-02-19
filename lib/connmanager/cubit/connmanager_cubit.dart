@@ -27,11 +27,14 @@ class ConnManagerCubit extends BroadcastCubit<int> {
         }
       }
     }
+    logCurrentConnections();
   }
 
   /// Remove connection
-  void removeConnectedClient(String address) =>
-      connections.removeWhere((key, value) => value == address);
+  void removeConnectedClient(String address) {
+    connections.removeWhere((key, value) => value == address);
+    logCurrentConnections();
+  }
 
   /// Upgrade connection
   void upgradeConnection(String address) {
@@ -42,5 +45,11 @@ class ConnManagerCubit extends BroadcastCubit<int> {
         connections[index] = address;
       }
     }
+    logCurrentConnections();
+  }
+
+  /// Log current connections
+  void logCurrentConnections() {
+    print(connections);
   }
 }
