@@ -1,9 +1,9 @@
 import 'package:broadcast_bloc/broadcast_bloc.dart';
 
 /// ConnManager Cubit
-class ConnManagerCubit extends BroadcastCubit<int> {
+class ConnManagerCubit extends BroadcastCubit<String> {
   /// Create an instance with an initial state of 0.
-  ConnManagerCubit(int maxConnections) : super(0) {
+  ConnManagerCubit(int maxConnections) : super('') {
     _connections = <int, String>{};
     _maxConnections = maxConnections;
   }
@@ -59,5 +59,11 @@ class ConnManagerCubit extends BroadcastCubit<int> {
   /// Max Connections reached
   bool maxConnectionsReached() {
     return _connections.length == _maxConnections;
+  }
+
+  /// Get current client ID
+  String getCurrentClientID(String address) {
+    final addr = _connections.entries.where((item) => item.value == address);
+    return '${addr.first.key}';
   }
 }
