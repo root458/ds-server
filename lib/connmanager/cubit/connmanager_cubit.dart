@@ -14,6 +14,9 @@ class ConnManagerCubit extends BroadcastCubit<String> {
   /// Storing the current connections
   late Map<int, String> _connections;
 
+  /// Current connections getter
+  Map<int, String> get connections => _connections;
+
   /// Add connection
   void addConnectedClient(String address) {
     if (_connections.containsValue(address)) {
@@ -63,6 +66,7 @@ class ConnManagerCubit extends BroadcastCubit<String> {
 
   /// Get current client ID
   String getCurrentClientID(String address) {
+    logCurrentConnections();
     final addr = _connections.entries.where((item) => item.value == address);
     return '${addr.first.key}';
   }
