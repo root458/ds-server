@@ -24,4 +24,13 @@ class Message {
 
   /// Stringified string that contains the message
   final String data;
+
+  /// Convery object to JSON
+  Map<String, String> toJson() {
+    return <String, String>{
+      'purpose': purpose,
+      'clientID': clientID,
+      'data': data,
+    };
+  }
 }
