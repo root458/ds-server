@@ -4,7 +4,7 @@ import 'package:distributed_server/colorchange/color_change.dart';
 import 'package:distributed_server/connmanager/connmanager.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  // Initialize conn manager
+  // Initialize connection manager
   final connManagerCubit = context.read<ConnManagerCubit>();
   final handler = webSocketHandler(
     (channel, protocol) {
@@ -13,8 +13,8 @@ Future<Response> onRequest(RequestContext context) async {
         return;
       }
       // Log address
-      final address = context.request.connectionInfo.remoteAddress;
-      connManagerCubit.addConnectedClient(address.address);
+      final address = context.request.connectionInfo.remoteAddress.address;
+      connManagerCubit.addConnectedClient(address);
       // A new client has connected to our server.
       // Subscribe the new client to receive notifications
       // whenever the cubit state changes.
@@ -26,12 +26,15 @@ Future<Response> onRequest(RequestContext context) async {
 
       // Listen for messages from the client.
       channel.stream.listen(
-        (newColorReq) => colorChangeCubit.changeColor(newColorReq as String),
+        (newColorReq) => colorChangeCubit.changeColor(
+          newColor: newColorReq as String,
+          clientID: connManagerCubit.getCurrentClientID(address),
+        ),
         // The client has disconnected.
         // Unsubscribe the channel.
         onDone: () {
           colorChangeCubit.unsubscribe(channel);
-          connManagerCubit.removeConnectedClient(address.address);
+          connManagerCubit.removeConnectedClient(address);
         },
       );
     },
