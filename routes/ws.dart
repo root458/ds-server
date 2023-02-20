@@ -12,9 +12,9 @@ Future<Response> onRequest(RequestContext context) async {
       if (connManagerCubit.maxConnectionsReached()) {
         return;
       }
-      // Log address
-      final address = context.request.connectionInfo.remoteAddress.address;
-      connManagerCubit.addConnectedClient(address);
+      // Log client ID
+      final uniqueID = context.request.uri.queryParameters['id']!;
+      connManagerCubit.addConnectedClient(uniqueID);
       // A new client has connected to our server.
       // Subscribe the new client to receive notifications
       // whenever the cubit state changes.
@@ -28,13 +28,14 @@ Future<Response> onRequest(RequestContext context) async {
       channel.stream.listen(
         (newColorReq) => colorChangeCubit.changeColor(
           newColor: newColorReq as String,
-          clientID: connManagerCubit.getCurrentClientID(address),
+          clientID: connManagerCubit.getCurrentClientID(uniqueID),
+          connections: connManagerCubit.connections,
         ),
         // The client has disconnected.
         // Unsubscribe the channel.
         onDone: () {
           colorChangeCubit.unsubscribe(channel);
-          connManagerCubit.removeConnectedClient(address);
+          connManagerCubit.removeConnectedClient(uniqueID);
         },
       );
     },
