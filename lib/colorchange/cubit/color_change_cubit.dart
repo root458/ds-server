@@ -11,6 +11,7 @@ final _initialState = Message(
   purpose: '_colorchange_',
   clientID: '0',
   data: _encoder.convert(CColor(color: 'white').toJson()),
+  connections: '',
 );
 
 /// ColorChange Cubit
@@ -19,17 +20,25 @@ class ColorChangeCubit extends BroadcastCubit<String> {
   ColorChangeCubit() : super(_encoder.convert(_initialState.toJson()));
 
   /// Change the current state.
-  void changeColor({required String newColor, required String clientID}) {
+  void changeColor({
+    required String newColor,
+    required String clientID,
+    required Map<int, String> connections,
+  }) {
     // Get color to send
     final color =
         CColor.fromJson(_decoder.convert(newColor) as Map<String, dynamic>);
     print(color.toJson());
 
+    final connectionsList = <dynamic>[
+      ...connections.entries.map((e) => e.value)
+    ];
     // Package message to send
     final message = Message(
       purpose: '_colorchange_',
       data: _encoder.convert(color.toJson()),
       clientID: clientID,
+      connections: json.encode(connectionsList),
     );
     emit(_encoder.convert(message.toJson()));
   }
