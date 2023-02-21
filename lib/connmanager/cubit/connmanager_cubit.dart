@@ -82,7 +82,8 @@ class ConnManagerCubit extends BroadcastCubit<String> {
 
   /// Max Connections reached
   bool maxConnectionsReached() {
-    return _connections.length == _maxConnections;
+    return _connections.values.where((element) => element.isNotEmpty).length ==
+        _maxConnections;
   }
 
   /// Get current client ID
