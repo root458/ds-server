@@ -25,7 +25,14 @@ class ConnManagerCubit extends BroadcastCubit<String> {
     } else {
       for (var index = 0; index < _maxConnections; index++) {
         if (_connections.containsKey(index)) {
-          continue;
+          if (_connections[index] != '') {
+            continue;
+          } else {
+            // Add connection, abort
+            _connections[index] = address;
+            logCurrentConnections();
+            return;
+          }
         } else {
           // Add connection, abort
           _connections[index] = address;
@@ -38,7 +45,14 @@ class ConnManagerCubit extends BroadcastCubit<String> {
 
   /// Remove connection
   void removeConnectedClient(String address) {
-    _connections.removeWhere((key, value) => value == address);
+    // _connections.removeWhere((key, value) => value == address);
+    final connectionRank = _connections.entries
+        .where(
+          (element) => element.value == address,
+        )
+        .first
+        .key;
+    _connections[connectionRank] = '';
     logCurrentConnections();
   }
 
@@ -46,12 +60,19 @@ class ConnManagerCubit extends BroadcastCubit<String> {
   void upgradeConnection(String address) {
     for (var index = 0; index < _maxConnections; index++) {
       if (_connections.containsKey(index)) {
-        continue;
+        if (_connections[index] != '') {
+          continue;
+        } else {
+          _connections[index] = address;
+          logCurrentConnections();
+          return;
+        }
       } else {
         _connections[index] = address;
+        logCurrentConnections();
+        return;
       }
     }
-    logCurrentConnections();
   }
 
   /// Log current connections
