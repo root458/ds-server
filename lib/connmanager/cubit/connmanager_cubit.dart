@@ -71,21 +71,22 @@ class ConnManagerCubit extends BroadcastCubit<String> {
 
   /// Upgrade connection
   void upgradeConnection(String address) {
-    for (var index = 0; index < _maxConnections; index++) {
+    final previousID = int.parse(getCurrentClientID(address));
+
+    for (var index = 0; index < previousID; index++) {
       if (_connections.containsKey(index)) {
         if (_connections[index] != '') {
           continue;
         } else {
           _connections[index] = address;
-          logCurrentConnections();
-          return;
+          _connections[previousID] = '';
         }
       } else {
         _connections[index] = address;
-        logCurrentConnections();
-        return;
+        _connections[previousID] = '';
       }
     }
+    logCurrentConnections();
   }
 
   /// Log current connections
