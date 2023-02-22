@@ -4,10 +4,11 @@ import 'package:distributed_server/colorchange/color_change.dart';
 import 'package:distributed_server/connmanager/connmanager.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  // Initialize connection manager
-  final connManagerCubit = context.read<ConnManagerCubit>();
   final handler = webSocketHandler(
     (channel, protocol) {
+      // Initialize connection manager
+      final connManagerCubit = context.read<ConnManagerCubit>()
+        ..subscribe(channel);
       // Accept no more connections
       if (connManagerCubit.maxConnectionsReached()) {
         return;
@@ -23,6 +24,9 @@ Future<Response> onRequest(RequestContext context) async {
 
       // Send the current color to the new client.
       channel.sink.add(colorChangeCubit.state);
+
+      // Send upgrade chances.
+      channel.sink.add(connManagerCubit.state);
 
       // Listen for messages from the client.
       channel.stream.listen(
