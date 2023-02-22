@@ -30,11 +30,21 @@ Future<Response> onRequest(RequestContext context) async {
 
       // Listen for messages from the client.
       channel.stream.listen(
-        (newColorReq) => colorChangeCubit.changeColor(
-          newColor: newColorReq as String,
-          clientID: connManagerCubit.getCurrentClientID(uniqueID),
-          connections: connManagerCubit.connections,
-        ),
+        (newReq) {
+          final req = newReq as String;
+
+          switch (req) {
+            case '_upgrade_':
+              connManagerCubit.upgradeConnection(uniqueID);
+              break;
+            default:
+              colorChangeCubit.changeColor(
+                newColor: req,
+                clientID: connManagerCubit.getCurrentClientID(uniqueID),
+                connections: connManagerCubit.connections,
+              );
+          }
+        },
         // The client has disconnected.
         // Unsubscribe the channel.
         onDone: () {
