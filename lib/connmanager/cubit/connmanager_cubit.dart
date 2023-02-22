@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:broadcast_bloc/broadcast_bloc.dart';
+import 'package:distributed_server/connmanager/models/message_model.dart';
+
+JsonEncoder _encoder = const JsonEncoder();
 
 /// ConnManager Cubit
 class ConnManagerCubit extends BroadcastCubit<String> {
@@ -53,6 +58,14 @@ class ConnManagerCubit extends BroadcastCubit<String> {
         .first
         .key;
     _connections[connectionRank] = '';
+    // Package message to send
+    final message = Message(
+      purpose: '_upgrade_',
+      data: '',
+      clientID: '$connectionRank',
+      connections: '',
+    );
+    emit(_encoder.convert(message.toJson()));
     logCurrentConnections();
   }
 
