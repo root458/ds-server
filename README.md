@@ -27,7 +27,7 @@ dart_frog dev
 This launches the server locally for you.
 
 ## How to use the project
-1. This API serves this [application](https://github.com/root458/negelected-client).
+1. This API serves this [application](https://github.com/root458/neglected-client).
 2. Tap any of the colors and watch the change. The server delivers your rank after your first color change.
 3. Feel free to experiment with the maximum connections the server should handle from this file:
 ```bash
