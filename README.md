@@ -13,7 +13,7 @@ One of the challenges faced during the development of this project was implement
 ## How to install and run the project
 1. Clone the repository using git clone 
 ```bash
-git clone https://github.com/root458/ds-server
+git clone https://github.com/root458/ds-server.git
 ```
 2. Ensure that DartLang is installed on your system. If not, follow the instructions [here](https://dart.dev/get-dart).
 3. Ensure that Dart Frog is installed on your system. If not, follow the instructions [here](https://dartfrog.vgv.dev/docs/overview).
